@@ -1,0 +1,21 @@
+name: ABS policy tests
+on:
+  push:
+    branches: [integration/audiobookshelf-safety-20261023]
+    paths: ['Tools/AudiobookShelfSyncPolicy/**', '.github/workflows/abs-policy.yml']
+  pull_request:
+    branches: [main]
+    paths: ['Tools/AudiobookShelfSyncPolicy/**', '.github/workflows/abs-policy.yml']
+permissions:
+  contents: read
+jobs:
+  policy:
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Test isolated policy, without building or installing BookPlayer
+        working-directory: Tools/AudiobookShelfSyncPolicy
+        run: swift test
